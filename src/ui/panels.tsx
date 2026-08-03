@@ -68,7 +68,17 @@ export function CardEditor({ card, onSave, onDelete }: { card: Card | null; onSa
   return (
     <div className="panel">
       <h3>Карточка</h3>
-      <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Заголовок" />
+      <input
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            if (title.trim()) onSave(title, body);
+          }
+        }}
+        placeholder="Заголовок"
+      />
       <textarea value={body} onChange={(e) => setBody(e.target.value)} placeholder="Тело (необязательно)" rows={5} />
       <div className="row">
         <button type="button" onClick={() => onSave(title, body)} disabled={!title.trim()}>
